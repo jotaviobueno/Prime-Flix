@@ -1,29 +1,13 @@
 import React, { Component } from "react";
+import User from './components/User/User.js'
 
 export default class App extends Component {
   
-	constructor ( props ) {
-		super(props)
-		this.state = {
-			hora: "00:00:00"
-		};
-	}
-
-	componentDidMount () {
-		setInterval( () => {
-			this.setState({ hora: new Date().toLocaleTimeString() });
-		}, 1000 );
-	}
-
-	// componentDidUpdate () {
-	// 	console.log("Atualizou!!!")
-	// }
-
 	render () {
- return (
-   <div>
-     <h1> Meu projeto { this.state.hora } </h1>
-   </div>
-  )
- }
+		return (
+			<div>
+				<User name="Visitante" />
+			</div>
+		);
+	}
 }
