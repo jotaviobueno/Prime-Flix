@@ -1,52 +1,43 @@
-import React, { Component } from  'react';
+import React, { Component } from "react"
 
-export default class User extends Component {
+import Button from './components/Button.js'
+import './estilo.css'
 
+export default class App extends Component {
+    
     constructor ( props ) {
         super(props);
-        this.state = {
-            form: {
-                name: "",
-                email: "",
-                password: "",
-                sexo: ""
-            }
+        this.state= {
+            frase: ""
         };
 
-        this.changeData = this.changeData.bind( this );
+        this.frases = [
+            'Siga os bons e aprenda com eles.', 'O bom-senso vale mais do que muito conhecimento.', 
+            'O riso é a menor distância entre duas pessoas.', 
+            'Deixe de lado as preocupações e seja feliz.',
+            'Realize o óbvio, pense no improvável e conquiste o impossível.',
+            'Acredite em milagres, mas não dependa deles.',
+            'A maior barreira para o sucesso é o medo do fracasso.'
+        ];
 
+        this.quebrarbiscoito = this.quebrarbiscoito.bind( this );
     }
 
-    changeData ( event ) {
-        let form = this.state.form;
+    quebrarbiscoito () {
+        let state = this.state;
+        const randomNumber = Math.floor(Math.random() * this.frases.length );
 
-        form[event.target.name] = event.target.value;
-        this.setState({ form: form })
-    } 
+        state.frase = this.frases[randomNumber];
+
+        this.setState( state );
+    }
 
     render () {
         return (
-            <div>
-				<h2> Login </h2>
-
-                Nome:
-                    <input type= "text" name= "name" value= { this.state.form.name } onChange= { this.changeData } /> <br/>
-				Email:
-					<input type= "email" name= "email" value= { this.state.form.email  } onChange= { this.changeData } /> <br/>
-				Password:
-					<input type= "password" name= "password" value= { this.state.form.password } onChange= { this.changeData } /> <br/>
-				Sexo:
-                    <select name= "sexo" value= { this.state.sexo } onChange= { this.changeData } >
-                        <option value= "masculino" > Masculino </option>    
-                        <option value= "feminino"  > Feminino </option>   
-                        <option value= "n/a" > Prefiro não responder </option>    
-                    </select>	
-
-                <div>
-                    <h3> { this.state.form.email } </h3>
-                    <h3> { this.state.form.password } </h3>
-                    <h3> { this.state.form.sexo } </h3>
-                </div>
+            <div className= "container" >
+                <img src= { require('./assets/biscoito.png') } className= "img" />
+                <Button nome= "Abrir biscoito" acao= { this.quebrarbiscoito } />
+                <h3 className= "texto" > { this.state.frase } </h3>
             </div>
         );
     }
