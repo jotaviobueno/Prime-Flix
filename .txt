@@ -1,0 +1,87 @@
+import React, { Component } from "react";
+
+class Equipe extends Component {
+
+  render () {
+    return (
+      <div>
+        <Sobre name = { this.props.name } role = { this.props.role}  age = { this.props.age } />
+
+        <Social facebook = { this.props.facebook } linkedin = { this.props.linkedin } />
+
+        <hr/>
+      </div>
+    )
+  }
+}
+
+class Sobre extends Component {
+
+  render () {
+    return (
+      <div>
+        <h2> Hello { this.props.name } </h2>
+        <h3> Role: { this.props.role } </h3>
+        <h3> Age: { this.props.age } </h3>
+
+      </div>
+    );
+  }
+}
+
+function Social ( props ) {
+  return ( 
+    <div>
+      <a href= {props.facebook} > Facebook </a>
+      <a href= {props.linkedin} > linkedin </a>
+    </div>
+
+  )
+}
+
+export default function App ( ) {
+  return ( 
+    <div>
+
+      <h1> conheça nossa equipe: </h1>
+
+      <Equipe name = "Otavio" role = "programador" age = "24" />
+      <Equipe name = "Lucas" role = "programador" age = "32" />
+      <Equipe name = "Pedro" role = "programador" age = "32" />
+
+
+    </div>
+  )
+}
+
+// RELOGIO
+
+import React, { Component } from "react";
+
+export default class App extends Component {
+  
+	constructor ( props ) {
+		super(props)
+		this.state = {
+			hora: "00:00:00"
+		};
+	}
+
+	componentDidMount () {
+		setInterval( () => {
+			this.setState({ hora: new Date().toLocaleTimeString() });
+		}, 1000 );
+	}
+
+	// componentDidUpdate () {
+	// 	console.log("Atualizou!!!")
+	// }
+
+	render () {
+ return (
+   <div>
+     <h1> Meu projeto { this.state.hora } </h1>
+   </div>
+  )
+ }
+}
