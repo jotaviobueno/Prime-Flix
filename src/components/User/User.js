@@ -5,23 +5,37 @@ export default class User extends Component {
     constructor ( props ) {
         super(props);
         this.state = {
-            name: props.name
+            status: false
         };
 
-        this.entrar = this.entrar.bind( this );
+        this.leave = this.leave.bind(this);
+        this.join = this.join.bind(this);
+
     }
 
-    entrar ( name ) {
-        this.setState({ name: name });
+    leave (  ) {
+        this.setState({ status: false });
+    }
+
+    join (  ) {
+        this.setState({ status: true });
     }
     
     render () {
         return (
             <div>
-               <h2> Bem-vindo ao nosso site { this.state.name }</h2>
+                {
+                    this.state.status ? 
+                    <div>
+                        <h2> Bem-vindo ao sistema </h2>    
+                        <button onClick = { this.leave } > Sair no sistema </button>
+                    </div> :
+                    <div>
+                        <h2> Ola visitante faça login </h2>
+                        <button onClick = { this.join } > Entrar no sistema </button>
 
-               <button onClick = { () => this.entrar("otavio123") } > Entrar como Otavio </button>
-               <button onClick = { () => this.setState({ name: "" })} > Sair </button>
+                    </div>
+                }
             </div>
         );
     }
