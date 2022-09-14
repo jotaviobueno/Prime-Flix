@@ -1,69 +1,41 @@
-import React, { Component } from "react"
-import './index.css'
-import "./style.css"
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
-export default class App extends Component {
-    
-    constructor ( props ) {
-        super(props);
-        this.state= {
-            number: 0,
-            btn: "VAI"
-        };
-        
-        this.timer = null;
-        this.vai = this.vai.bind(this);
-        this.limpar = this.limpar.bind(this);
-    }
+export default function App() {
 
-    vai () {
-        let state = this.state;
+    const [ tarefas, setTarefas ] = useState( []);
 
-        if ( this.timer !== null ) {
-            clearInterval( this.timer );
+    useEffect( () => {
+        const tarefasStorage = localStorage.getItem(tarefas);
 
-            this.timer = null;
+        if ( tarefasStorage )
+            setTarefas(JSON.parse(tarefasStorage))
+    }, [] )
 
-            state.btn = "VAI"
-        } else {
-            this.timer = setInterval( () => {
-                let state = this.state;
+    useEffect( () => {
+        localStorage.setItem('tarefas', JSON.stringify(tarefas) );
+    }, [tarefas] );
 
-                state.number += 0.1;
+    const [ input, setInput ] = useState("");
 
-                this.setState(state);
-            }, 100 );
+    const handleAdd = useCallback(() => {
+        setTarefas([...tarefas, input ]);
+    }, [input, tarefas] );
 
-            state.btn = "PAUSAR"
-        }
-    }
+    const totalTarefas = useMemo( () => tarefas.length, [ tarefas ]);
 
-    limpar () {        
-        if ( this.timer !== null ) {
-            clearInterval( this.timer );
+    return (
+        <div>
+           <ul>
+            { tarefas.map( (tarefa) => {
+                return ( <li key= {tarefa} > { tarefa } </li> );
+            })}
+           </ul>
 
-            this.timer = null;
-        }
+           <br/>
+           <strong> Você tem { totalTarefas } tarefas! </strong><br/>
 
-        let state = this.state;
-        state.number = 0;
-        state.btn = "VAI";
-        this.setState(state);
-    }
-
-    render () {
-        return (
-            <div className="container" >
-               <img className="img" src={ require('./assets/cronometro.png') } alt="alt" />
-               <a className="timer" > { this.state.number.toFixed(1) } </a>
-
-                <div className="areaBtn" >
-                    <a className="btn" onClick= {this.vai} > { this.state.btn } </a>
-                    <a className="btn" onClick= {this.limpar} > LIMPAR </a>
-
-                </div>
-
-            </div>
-        );
-    }
+           <input type= "text" value= { input } onChange= { event => setInput( event.target.value ) } />
+           <button type= "button" onClick= { handleAdd }> Adicionar </button>
+        </div>
+    );
 }
