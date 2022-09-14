@@ -1,43 +1,68 @@
 import React, { Component } from "react"
-
-import Button from './components/Button.js'
-import './estilo.css'
+import './index.css'
+import "./style.css"
 
 export default class App extends Component {
     
     constructor ( props ) {
         super(props);
         this.state= {
-            frase: ""
+            number: 0,
+            btn: "VAI"
         };
-
-        this.frases = [
-            'Siga os bons e aprenda com eles.', 'O bom-senso vale mais do que muito conhecimento.', 
-            'O riso é a menor distância entre duas pessoas.', 
-            'Deixe de lado as preocupações e seja feliz.',
-            'Realize o óbvio, pense no improvável e conquiste o impossível.',
-            'Acredite em milagres, mas não dependa deles.',
-            'A maior barreira para o sucesso é o medo do fracasso.'
-        ];
-
-        this.quebrarbiscoito = this.quebrarbiscoito.bind( this );
+        
+        this.timer = null;
+        this.vai = this.vai.bind(this);
+        this.limpar = this.limpar.bind(this);
     }
 
-    quebrarbiscoito () {
+    vai () {
         let state = this.state;
-        const randomNumber = Math.floor(Math.random() * this.frases.length );
 
-        state.frase = this.frases[randomNumber];
+        if ( this.timer !== null ) {
+            clearInterval( this.timer );
 
-        this.setState( state );
+            this.timer = null;
+
+            state.btn = "VAI"
+        } else {
+            this.timer = setInterval( () => {
+                let state = this.state;
+
+                state.number += 0.1;
+
+                this.setState(state);
+            }, 100 );
+
+            state.btn = "PAUSAR"
+        }
+    }
+
+    limpar () {        
+        if ( this.timer !== null ) {
+            clearInterval( this.timer );
+
+            this.timer = null;
+        }
+
+        let state = this.state;
+        state.number = 0;
+        state.btn = "VAI";
+        this.setState(state);
     }
 
     render () {
         return (
-            <div className= "container" >
-                <img src= { require('./assets/biscoito.png') } className= "img" />
-                <Button nome= "Abrir biscoito" acao= { this.quebrarbiscoito } />
-                <h3 className= "texto" > { this.state.frase } </h3>
+            <div className="container" >
+               <img className="img" src={ require('./assets/cronometro.png') } alt="alt" />
+               <a className="timer" > { this.state.number.toFixed(1) } </a>
+
+                <div className="areaBtn" >
+                    <a className="btn" onClick= {this.vai} > { this.state.btn } </a>
+                    <a className="btn" onClick= {this.limpar} > LIMPAR </a>
+
+                </div>
+
             </div>
         );
     }
