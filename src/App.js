@@ -1,41 +1,41 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import "./style.css";
 
 export default function App() {
 
-    const [ tarefas, setTarefas ] = useState( []);
+    const [ nutri, setNutri ] = useState([]);
+    
+    useEffect(() => {
 
-    useEffect( () => {
-        const tarefasStorage = localStorage.getItem(tarefas);
+        function loadAPI() {
+            fetch("https://sujeitoprogramador.com/rn-api/?api=posts").then((response) => response.json()).then((json) => {
+               setNutri(json);
+            });
+        };
 
-        if ( tarefasStorage )
-            setTarefas(JSON.parse(tarefasStorage))
-    }, [] )
-
-    useEffect( () => {
-        localStorage.setItem('tarefas', JSON.stringify(tarefas) );
-    }, [tarefas] );
-
-    const [ input, setInput ] = useState("");
-
-    const handleAdd = useCallback(() => {
-        setTarefas([...tarefas, input ]);
-    }, [input, tarefas] );
-
-    const totalTarefas = useMemo( () => tarefas.length, [ tarefas ]);
+        loadAPI();
+    }, [])
 
     return (
-        <div>
-           <ul>
-            { tarefas.map( (tarefa) => {
-                return ( <li key= {tarefa} > { tarefa } </li> );
+        <div className='container'>
+            <header>
+                <strong> React Nutri </strong>
+            </header>
+
+            {nutri.map( (item) => {
+                return(
+                    <article key={item.id} className="post">
+                        <strong className='titulo'> {item.titulo} </strong>
+
+                        <img src= { item.capa } alt={ item.titulo } className="capa" />
+
+                        <p className='subtitulo'> { item.subtitulo } </p>
+
+                        <a className= 'buttonArticle'> Acessar </a>
+
+                    </article>
+                );
             })}
-           </ul>
-
-           <br/>
-           <strong> Você tem { totalTarefas } tarefas! </strong><br/>
-
-           <input type= "text" value= { input } onChange= { event => setInput( event.target.value ) } />
-           <button type= "button" onClick= { handleAdd }> Adicionar </button>
         </div>
     );
 }
