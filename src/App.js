@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import RoutesApp from './routes/v1.js'
+// Routes
+import RoutesApp from './Routes/routes.js';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
+   
+    return(
 
-    return (
-        
-        <RoutesApp/>
-        
+        <div className='App'>
+            <ToastContainer autoClose={3000} />
+            <RoutesApp/>
+        </div>
+
     );
 }
